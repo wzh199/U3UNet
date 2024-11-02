@@ -1,2 +1,1 @@
-# U3UNet
-# U3UNet
+##The Fire Segmentation Model
