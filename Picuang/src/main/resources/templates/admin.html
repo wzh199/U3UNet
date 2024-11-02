@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🛏Picuang - 永久免费 | 免登录图床</title>
+    <link href="favicon.png" rel="icon">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/cover.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/clipboard.js"></script>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+</head>
+<body>
+
+<!-- 弹窗模态框 -->
+<div aria-labelledby="myModalLabel" class="modal fade" id="helpModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <font color="#333333" style="text-shadow: none"><span id="helpText"></span></font>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">好</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框结束 -->
+
+<div class="site-wrapper" id="siteWrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <a href="/"><h3 class="masthead-brand">必床 Picuang</h3></a>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li id="logout" style="display: none"><a href="javascript:logout();">注销</a></li>
+                            <li><a href="/">上传</a></li>
+                            <li><a href="/history">历史</a></li>
+                            <li class="active"><a href="/admin">管理</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                <div id="admin" style="margin-top: 36px; margin-bottom: 36px;">
+                    <div id="checkVersion" th:utext="${checkVersion}"></div>
+                    <div id="message" style="display: none"></div>
+                    <div id="config" style="display: none">
+                        <div class="row" id="config-row">
+                        </div>
+                        <hr color="#6f5499"
+                            size="3"
+                            style="filter: alpha(opacity=100,finishopacity=0,style=3); margin-top: 36px; margin-bottom: 36px;"
+                            width="95%"/>
+                        <div class="config-buttons">
+                            <h5>主操作台</h5>
+                            <div aria-label="..." class="btn-group btn-group-justified" role="group">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default" onclick="exportConfig()" type="button">导出配置</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-primary" onclick="adminOnlyToggle()" type="button">仅允许管理员上传
+                                        (当前: <span id="adminOnlyStatus"></span>)
+                                    </button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default" id="importButton" type="button">导入配置</button>
+                                    <input accept="" id="import"
+                                           multiple
+                                           name="importFile"
+                                           onchange="importConfig()" style="display: none" type="file">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reload-buttons" style="margin-top: 32px">
+                            <h5>危险操作台</h5>
+                            <div aria-label="..." class="btn-group btn-group-justified" role="group">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-success" onclick="reloadServer()" type="button">重载</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-danger" onclick="reNewConfig()" type="button">重新生成配置文件
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr color="#6f5499"
+                            size="3"
+                            style="filter: alpha(opacity=100,finishopacity=0,style=3); margin-top: 36px; margin-bottom: 36px;"
+                            width="95%"/>
+                        <div class="container-fluid" id="help">
+                            <div class="accordion" id="accordion2">
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-parent="#accordion2" data-toggle="collapse"
+                                           href="#collapseOne">
+                                            Q：如何修改我的上传大小限制？
+                                        </a>
+                                    </div>
+                                    <div class="accordion-body collapse" id="collapseOne" style="height: 0px; ">
+                                        <div class="accordion-inner">
+                                            <p>A：编辑文件 "<span th:text="${appConfLocation}"></span>"<br>
+                                                修改 "spring.servlet.multipart.max-file-size" 和
+                                                "spring.servlet.multipart.max-request-size" 选项<br>
+                                                假如限制大小为10MB，则将两个键的值全部改为"10MB"，最后重启服务端使其生效。<br>
+                                                如果重启服务器后不生效或仍有问题，请参阅<a
+                                                        href="https://github.com/AdlerED/Picuang#rotating_light-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"
+                                                        target="_blank"><b>这里</b></a></p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>
+                        <a href="https://github.com/AdlerED/Picuang" target="_blank">Picuang <span
+                                th:text="${version}"></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/user/clipboard-control.js"></script>
+<script src="js/user/click-listen.js"></script>
+<script src="js/user/common-queue.js"></script>
+<script src="js/user/drag-and-drop.js"></script>
+<script src="js/user/on-paste.js"></script>
+<script src="js/user/notify.js"></script>
+<script src="js/d-toast.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/fantastic-progress-bar-bootstrap.js"></script>
+<script src="js/admin/main.js"></script>
+<script src="js/admin/config.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>🛏Picuang - 永久免费 | 免登录图床</title>
+    <link href="favicon.png" rel="icon">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/cover.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/clipboard.js"></script>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+</head>
+<body>
+
+<div class="site-wrapper" id="siteWrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <a href="/"><h3 class="masthead-brand">必床 Picuang</h3></a>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="/">上传</a></li>
+                            <li><a href="/history">历史</a></li>
+                            <li><a href="/last">最后的图片</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                <h1 class="cover-heading">永久免费 | 免登录图床</h1>
+                <p class="lead">
+                    请将图片拖拽、粘贴或点击按钮上传<br>
+                    支持同时多个上传 | 支持JPG / PNG / SVG / GIF / BMP / ICO / TIFF<br>
+                    图片不会被压缩，不限制外链，永久保存
+                </p>
+                <p>
+                    图片大小限制：<span id="picLimit" th:text="${limit}"></span>
+                    <br>
+                    为用户累计永久存储图片：<span th:text="${files}"></span>张
+                    <br>
+                    服务器剩余空间：<span th:text="${free}"></span>GB
+                </p>
+
+                <span id="functions" style="display: none">
+                    <p class="lead">
+                        <a class="btn btn-lg btn-default" href="javascript:void(0)" id="select" style="margin-top: 8px">选择图片</a>
+                        <select class="btn btn-lg btn-default" id="type" name="type">
+                            <option value="front">front</option>
+                            <option value="belowRGB">belowRGB</option>
+                            <option value="belowBinary">belowBinary</option>
+                        </select>
+                        <a class="btn btn-lg btn-default" href="javascript:void(0)" id="delete" style="margin-top: 8px" onclick="deleteImg()">删除图片</a>
+
+                        <input accept="image/jpg,image/jpeg,image/png,image/gif,image/svg,image/svg+xml,application/x-bmp,image/x-icon,application/x-ico,image/tiff"
+                               id="upload"
+                               multiple
+                               name="file"
+                               onchange="upload()" style="display: none" type="file">
+                    </p>
+
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-12">-->
+<!--                            <div class="input-group">-->
+<!--                                <input class="form-control" id="picURL"-->
+<!--                                       placeholder="输入图片URL链接，一键转存至Picuang图床" type="text">-->
+<!--                                <span class="input-group-btn">-->
+<!--                                     <button class="btn btn-default" onclick="clone()" type="button">Clone!</button>-->
+<!--                                </span>-->
+<!--                                <script>-->
+<!--                                    $("#picURL").keyup(function (event) {-->
+<!--                                        if (event.keyCode === 13) {-->
+<!--                                            clone();-->
+<!--                                        }-->
+<!--                                    });-->
+<!--                                </script>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <br>
+                </span>
+
+                <div id="status"></div>
+
+                <br>
+
+                <div id="clipboardStatus"></div>
+
+<!--                <div class="alert alert-success" id="dragToUploadInformation" role="alert"-->
+<!--                     style="display: none; text-shadow: none;">松手上传-->
+<!--                </div>-->
+
+                <div class="progress" style="height: 2px">
+                    <div class="progress-bar progress-bar-success" id="bar1" style="width: 0%">
+                    </div>
+                    <div class="progress-bar progress-bar-warning" id="bar2" style="width: 0%">
+                    </div>
+                    <div class="progress-bar progress-bar-danger" id="bar3" style="width: 0%">
+                    </div>
+                </div>
+
+                <div class="row" id="links" style="display: none;">
+                    <div id="appendLinks"></div>
+                    <br><br>
+                </div>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>
+                        <a href="https://github.com/AdlerED/Picuang" target="_blank">Picuang <span
+                                th:text="${version}"></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/user/clipboard-control.js"></script>
+<script src="js/user/click-listen.js"></script>
+<script src="js/user/common-queue.js"></script>
+<script src="js/user/drag-and-drop.js"></script>
+<script src="js/user/on-paste.js"></script>
+<script src="js/user/notify.js"></script>
+<script src="js/d-toast.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/fantastic-progress-bar-bootstrap.js"></script>
+
+</body>
+</html>
